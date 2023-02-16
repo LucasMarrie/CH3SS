@@ -6,7 +6,7 @@ namespace Chess.StandardMoveset{
     public static class StandardMoveset
     {
 
-        static Coord[] knightDisplacement = new Coord[]{
+        static readonly Coord[] knightDisplacement = new Coord[]{
             new Coord(1, 2),
             new Coord(2, 1),
             new Coord(2, -1),
@@ -16,6 +16,27 @@ namespace Chess.StandardMoveset{
             new Coord(-2, 1),
             new Coord(-1, 2)
         };
+
+        static readonly Coord[] straightDisplacement = new Coord[]{
+            new Coord(1, 0),
+            new Coord(0, -1),
+            new Coord(-1, 0),
+            new Coord(0, 1)
+        };
+
+        static readonly Coord[] diagonalDisplacement = new Coord[]{
+            new Coord(1, 1),
+            new Coord(-1, -1),
+            new Coord(-1, 1),
+            new Coord(1, -1)
+        };
+
+        static readonly PieceType[] castleablePieces = new PieceType[]{
+            PieceType.Rook
+        };
+
+
+
         
         public static Move[] KnightMove(this Piece piece, Board board){
             List<Move> moves = new List<Move>();
@@ -32,14 +53,6 @@ namespace Chess.StandardMoveset{
             }
             return moves.ToArray();
         }
-
-        static Coord[] straightDisplacement = new Coord[]{
-            new Coord(1, 0),
-            new Coord(0, -1),
-            new Coord(-1, 0),
-            new Coord(0, 1)
-        };
-
         //rook type movement but with range, and range = -1 means infinite range
         public static Move[] StraightMove(this Piece piece, Board board, int range = -1){
             List<Move> moves = new List<Move>();
@@ -66,12 +79,6 @@ namespace Chess.StandardMoveset{
             return moves.ToArray();
         }
 
-        static Coord[] diagonalDisplacement = new Coord[]{
-            new Coord(1, 1),
-            new Coord(-1, -1),
-            new Coord(-1, 1),
-            new Coord(1, -1)
-        };
 
         //bishop type movement but with range, and range = -1 means infinite range
         public static Move[] DiagonalMove(this Piece piece, Board board, int range = -1){
@@ -99,7 +106,7 @@ namespace Chess.StandardMoveset{
             return moves.ToArray();
         }
 
-        public static Move[] pawnWalk(this Piece piece, Board board, int chargeRange = 2){
+        public static Move[] PawnWalk(this Piece piece, Board board, int chargeRange = 2){
             List<Move> moves = new List<Move>();
             Coord displacement = piece.player.forwardDirection;
             Coord newPosition = piece.Position + displacement;
@@ -126,7 +133,7 @@ namespace Chess.StandardMoveset{
             return moves.ToArray();
         }
 
-        public static Move[] pawnAttack(this Piece piece, Board board){
+        public static Move[] PawnAttack(this Piece piece, Board board){
             List<Move> moves = new List<Move>();
             Coord forward = piece.player.forwardDirection;
             Coord[] attackDisplacements = new Coord[]{
@@ -170,11 +177,7 @@ namespace Chess.StandardMoveset{
             }
         } 
 
-        static PieceType[] castleablePieces = new PieceType[]{
-            PieceType.rook
-        };
-
-        public static Move[] Castle(this Piece piece, Board board){
+        public static Move[] Castling(this Piece piece, Board board){
             //check if piece has moved or is in check
             if (piece.moved || board.IsSpaceAttacked(piece.Position, piece.player)) return new Move[0];
 

@@ -97,7 +97,7 @@ namespace Chess {
                 if(!player.IsAlly(piece.player)){
                     foreach(Move move in piece.GenerateMoves(this)){
                         foreach(Coord capture in move.captures){
-                            if(Grid[capture.x, capture.y].Type == PieceType.king) return true;
+                            if(Grid[capture.x, capture.y].Type == PieceType.King) return true;
                         }
                     }
                 }
